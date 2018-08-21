@@ -8,8 +8,8 @@ import (
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
 	_ "github.com/joho/godotenv/autoload"
-	"github.com/teimurjan/go-words-game/handlers"
-	"github.com/teimurjan/go-words-game/router"
+	"github.com/teimurjan/go-words-game-tg-bot/handlers"
+	"github.com/teimurjan/go-words-game-tg-bot/router"
 )
 
 func main() {

@@ -2,7 +2,7 @@ package handlers
 
 import (
 	"github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/teimurjan/go-words-game/texts"
+	"github.com/teimurjan/go-words-game-tg-bot/texts"
 )
 
 func NewWelcomeHandler(bot *tgbotapi.BotAPI) func(u *tgbotapi.Update) {
