@@ -2,3 +2,4 @@ words.txt
 .vscode
 .env
 main
+db/dbconf.yml

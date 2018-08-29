@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 	"os"
-	"reflect"
 	"strconv"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api"
@@ -11,6 +10,20 @@ import (
 	"github.com/teimurjan/go-words-game-tg-bot/handlers"
 	"github.com/teimurjan/go-words-game-tg-bot/router"
 )
+
+func makeCommandRouter(bot *tgbotapi.BotAPI) *router.CommandRouter {
+	routes := []*router.CommandRoute{
+		&router.CommandRoute{
+			"/start",
+			handlers.NewWelcomeHandler(bot),
+		},
+		&router.CommandRoute{
+			"/start_game",
+			handlers.NewStartGameHandler(bot),
+		},
+	}
+	return &router.CommandRouter{routes}
+}
 
 func main() {
 	bot, err := tgbotapi.NewBotAPI(os.Getenv("TELEGRAM_BOT_TOKEN"))
@@ -25,24 +38,17 @@ func main() {
 
 	updates, err := bot.GetUpdatesChan(u)
 
-	routes := []*router.CommandRoute{
-		&router.CommandRoute{
-			"/start",
-			handlers.NewWelcomeHandler(bot),
-		},
-		&router.CommandRoute{
-			"/start_game",
-			handlers.NewStartGameHandler(bot),
-		},
-	}
-	router := router.CommandRouter{routes}
+	commandRouter := makeCommandRouter(bot)
 
 	for update := range updates {
-		isMessageString := reflect.TypeOf(update.Message.Text).Kind() == reflect.String
-		if !isMessageString || update.Message.Text == "" {
+		if update.Message != nil {
 			continue
 		}
 
-		router.GetHandler(update.Message.Text)(&update)
+		if update.Message.IsCommand() {
+			commandRouter.GetHandler(update.Message.Text)(update.Message)
+		} else if update.Message.Text != "" {
+			// TODO: implement text routing
+		}
 	}
 }

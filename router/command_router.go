@@ -6,18 +6,14 @@ import (
 
 type CommandRoute struct {
 	Command string
-	Handler func(update *tgbotapi.Update)
-}
-
-type Router interface {
-	GetHandler(command string) func(update *tgbotapi.Update)
+	Handler func(m *tgbotapi.Message)
 }
 
 type CommandRouter struct {
 	Routes []*CommandRoute
 }
 
-func (router *CommandRouter) GetHandler(command string) func(update *tgbotapi.Update) {
+func (router *CommandRouter) GetHandler(command string) func(m *tgbotapi.Message) {
 	for _, route := range router.Routes {
 		if route.Command == command {
 			return route.Handler

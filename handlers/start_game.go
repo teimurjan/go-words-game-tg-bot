@@ -5,9 +5,9 @@ import (
 	"github.com/teimurjan/go-words-game-tg-bot/texts"
 )
 
-func NewStartGameHandler(bot *tgbotapi.BotAPI) func(u *tgbotapi.Update) {
-	return func(u *tgbotapi.Update) {
-		msg := tgbotapi.NewMessage(u.Message.Chat.ID, texts.StartGame)
+func NewStartGameHandler(bot *tgbotapi.BotAPI) func(m *tgbotapi.Message) {
+	return func(m *tgbotapi.Message) {
+		msg := tgbotapi.NewMessage(m.Chat.ID, texts.StartGame)
 		bot.Send(msg)
 	}
 }
